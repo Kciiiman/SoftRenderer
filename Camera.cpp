@@ -5,9 +5,9 @@ Camera::Camera(
 	const glm::vec3& pos,
 	const glm::vec3& worldup,
 	const glm::vec3& lookAt,
-	const float& _fov,
-	const float& _n,
-	const float& _f
+	const double& _fov,
+	const double& _n,
+	const double& _f
 ) : position(pos), worldUp(worldup), n(_n), f(_f) {
 	front = glm::normalize(lookAt - pos);
 	right = glm::normalize(glm::cross(front, worldUp));
@@ -16,8 +16,8 @@ Camera::Camera(
 
 	glm::vec3 worldFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 frontXZ = glm::normalize(glm::vec3(front.x, 0.0f, front.z));
-	float cosPitch = glm::dot(front, frontXZ);
-	float cosYaw = glm::dot(worldFront, frontXZ);
+	double cosPitch = glm::dot(front, frontXZ);
+	double cosYaw = glm::dot(worldFront, frontXZ);
 	cosPitch = cosPitch > 1 ? 1 : cosPitch;
 	cosPitch = cosPitch < 0 ? 0 : cosPitch;
 	cosYaw = cosYaw > 1 ? 1 : cosYaw;
@@ -29,12 +29,12 @@ Camera::Camera(
 }
 
 void Camera::updateAspact(const int& width, const int& height) {
-	float w = width;
-	float h = height;
+	double w = width;
+	double h = height;
 	aspect = w / h;
 }
 
-void Camera::updateFov(const float& f) {
+void Camera::updateFov(const double& f) {
 	fov = glm::radians(f);
 }
 
@@ -46,38 +46,38 @@ glm::mat4 Camera::perspectiveMatrix() {
 	return getPerspectiveMatrix(fov, aspect, n, f);
 }
 
-void Camera::moveForward(const float& distance) {
-	position += front * distance;
+void Camera::moveForward(const double& distance) {
+	position += front * static_cast<float>(distance);
 }
 
-void Camera::moveBackward(const float& distance) {
-	position -= front * distance;
+void Camera::moveBackward(const double& distance) {
+	position -= front * static_cast<float>(distance);
 }
 
-void Camera::moveRight(const float& distance) {
-	position += right * distance;
+void Camera::moveRight(const double& distance) {
+	position += right * static_cast<float>(distance);
 }
 
-void Camera::moveLeft(const float& distance) {
-	position -= right * distance;
+void Camera::moveLeft(const double& distance) {
+	position -= right * static_cast<float>(distance);
 }
 
-void Camera::moveUp(const float& distance) {
-	position += up * distance;
+void Camera::moveUp(const double& distance) {
+	position += up * static_cast<float>(distance);
 }
 
-void Camera::moveDown(const float& distance) {
-	position -= up * distance;
+void Camera::moveDown(const double& distance) {
+	position -= up * static_cast<float>(distance);
 }
 
-void Camera::rotatePitch(const float& angle) {
+void Camera::rotatePitch(const double& angle) {
 	pitch += angle;
 	pitch = pitch > 89.0 ? 89.0 : pitch;
 	pitch = pitch < -89.0 ? -89.0 : pitch;
 	updateVectors();
 }
 
-void Camera::rotateYaw(const float& angle) {
+void Camera::rotateYaw(const double& angle) {
 	yaw += angle;
 	while (yaw >= 360) yaw -= 360;
 	while (yaw < 0) yaw += 360;

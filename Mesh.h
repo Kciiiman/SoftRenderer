@@ -35,7 +35,7 @@ public:
 	glm::vec4 color;
 	glm::vec2 texCoord;
 	glm::vec3 normal;
-	float oneDivZ;     //1/z用于深度测试
+	double oneDivZ;     //1/z用于深度测试
 
 	Vertex() = default;
 	~Vertex() = default;
@@ -46,7 +46,7 @@ public:
 		const glm::vec4& _color,
 		const glm::vec2& _texCoord,
 		const glm::vec3& _normal,
-		const float& _oneDivZ
+		const double& _oneDivZ
 	) : worldPos(_worldPos), windowPos(_windowPos), color(_color), texCoord(_texCoord), normal(_normal), oneDivZ(_oneDivZ) { }
 
 	Vertex(const Vertex& v) : worldPos(v.worldPos), windowPos(v.windowPos), color(v.color), texCoord(v.texCoord), normal(v.normal), oneDivZ(v.oneDivZ) { }
@@ -72,7 +72,7 @@ public:
 
 };
 Mesh createPlane(const glm::vec3& leftTop, const glm::vec3& leftBottom, const glm::vec3& rightBottom, const glm::vec3& rightTop, const glm::vec3& normal);
-Mesh createBox(const glm::vec3& center, float radius);
+Mesh createBox(const glm::vec3& center, double radius);
 
 
 #endif // !__MESH_H__

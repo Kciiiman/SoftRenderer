@@ -60,7 +60,7 @@ Mesh createPlane(const glm::vec3& rightTop, const glm::vec3& leftTop, const glm:
 	return result;
 }
 
-Mesh createBox(const glm::vec3& center, float radius) {
+Mesh createBox(const glm::vec3& center, double radius) {
 	Mesh result;
 
 	Mesh front = createPlane(
@@ -125,9 +125,9 @@ void Mesh::asBox(double width, double height, double depth)
     VBO.resize(24);
     EBO.resize(36);
 
-    float halfW = width * 0.5f;
-    float halfH = height * 0.5f;
-    float halfD = depth * 0.5f;
+    double halfW = width * 0.5f;
+    double halfH = height * 0.5f;
+    double halfD = depth * 0.5f;
     //front
     VBO[0].position = glm::vec4(halfW, halfH, halfD,1.0f);
     VBO[0].normal = glm::vec3(0.f, 0.f, 1.f);

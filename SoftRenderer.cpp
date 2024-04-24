@@ -10,14 +10,14 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1024;
+const unsigned int SCR_HEIGHT = 1024;
 int fps = 0;
 
 
 //pram
 Pipeline pip(SCR_WIDTH, SCR_HEIGHT,RenderMode::MESH);
-Camera camera(glm::vec3(-3.0f, 3.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 45.0f, 0.1f, 100.0f);
+Camera camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 45.0f, 0.1f, 100.0f);
 glm::vec4 refreshColor(30, 80, 90, 255);
 glm::vec4 Black(0, 0, 0, 255);
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Kci_Renderer", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1600, 1600, "Kci_Renderer", NULL, NULL);
     if (window == NULL)
         return 1;
 
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
     
     //pipeline
     pip.init();
-    pip.setShaderMode(Phong);
+    pip.setShaderMode(Simple);
     pip.setCamera(&camera);
 
     // lighting
@@ -88,11 +88,13 @@ int main(int argc, char** argv) {
     //    glm::vec3(1.0f, 0.07f, 0.017f));
 
     //model
-    Model model("./image/african_head/african_head.obj");
+    //Model model("./image/floor/floor.obj");
+    //pip.loadTexture("./image/floor/floor_diffuse.tga");
+	Model model("./image/african_head/african_head.obj");
     pip.loadTexture("./image/african_head/african_head_diffuse.tga");
+
     pip.bindTexture(0);
     pip.add(&model);
-    glm::mat4 model_Matrix = model.setSize(2.3, 2.3, 2.3);
 
     std::thread t(ShowFps, window);
     t.detach();

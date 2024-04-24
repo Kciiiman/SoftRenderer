@@ -38,14 +38,14 @@ void FrameBuffer::drawPixel(const int& x, const int& y, const glm::vec4& color) 
 	*(p + xy * 4 + 3) = color.a;
 }
 
-float FrameBuffer::getDepth(const int& x, const int& y) {
+double FrameBuffer::getDepth(const int& x, const int& y) {
 	if (x < 0 || x >= width || y < 0 || y >= height) {
 		return 1.0f;
 	}
 	return *(depthBuffer.data() + y * width + x);
 }
 
-void FrameBuffer::setDepth(const int& x, const int& y, const float& depth) {
+void FrameBuffer::setDepth(const int& x, const int& y, const double& depth) {
 	if (x < 0 || x >= width || y < 0 || y >= height) {
 		return;
 	}

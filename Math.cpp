@@ -1,38 +1,38 @@
 #include "Math.h"
 #include <algorithm>
-glm::vec4 Lerp(const glm::vec4& v1, const glm::vec4& v2, const float& factor) {
-	return (1 - factor) * v1 + factor * v2;
+glm::vec4 Lerp(const glm::vec4& v1, const glm::vec4& v2, const double& factor) {
+	return (1 - static_cast<float>(factor)) * v1 + static_cast<float>(factor) * v2;
 }
 
 glm::vec4 Lerp(const glm::vec4& v1, const glm::vec4& v2, const glm::vec4& v3, const glm::vec3& factor) {
 	return factor[0] * v1 + factor[1] * v2 + factor[2] * v3;
 }
 
-glm::vec3 Lerp(const glm::vec3& v1, const glm::vec3& v2, const float& factor) {
-	return (1 - factor) * v1 + factor * v2;
+glm::vec3 Lerp(const glm::vec3& v1, const glm::vec3& v2, const double& factor) {
+	return static_cast<float>(1 - factor) * v1 + static_cast<float>(factor) * v2;
 }
 
 glm::vec3 Lerp(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, const glm::vec3& factor) {
 	return factor[0] * v1 + factor[1] * v2 + factor[2] * v3;
 }
 
-glm::vec2 Lerp(const glm::vec2& v1, const glm::vec2& v2, const float& factor) {
-	return (1 - factor) * v1 + factor * v2;
+glm::vec2 Lerp(const glm::vec2& v1, const glm::vec2& v2, const double& factor) {
+	return static_cast<float>(1 - factor) * v1 + static_cast<float>(factor) * v2;
 }
 
 glm::vec2 Lerp(const glm::vec2& v1, const glm::vec2& v2, const glm::vec2& v3, const glm::vec3& factor) {
 	return factor[0] * v1 + factor[1] * v2 + factor[2] * v3;
 }
 
-float Lerp(const float& f1, const float& f2, const float& factor) {
+double Lerp(const double& f1, const double& f2, const double& factor) {
 	return (1 - factor) * f1 + factor * f2;
 }
 
-float Lerp(const float& f1, const float& f2, const float& f3, const glm::vec3& factor) {
+double Lerp(const double& f1, const double& f2, const double& f3, const glm::vec3& factor) {
 	return factor[0] * f1 + factor[1] * f2 + factor[2] * f3;
 }
 
-Vertex Lerp(const Vertex& v1, const Vertex& v2, const float& factor) {
+Vertex Lerp(const Vertex& v1, const Vertex& v2, const double& factor) {
 	Vertex result;
 	result.worldPos = Lerp(v1.worldPos, v2.worldPos, factor);
 	result.windowPos = Lerp(v1.windowPos, v2.windowPos, factor);
@@ -59,7 +59,7 @@ Vertex Lerp(const Vertex& v1, const Vertex& v2, const Vertex& v3, const glm::vec
 void perspectiveDivision(Vertex& v) {
 	v.windowPos /= v.windowPos.w;
 	v.windowPos.w = 1.0f;
-	v.windowPos.z = (v.windowPos.z + 1.0) * 0.5;
+	v.windowPos.z = (v.windowPos.z + 1.0f) * 0.5f;
 }
 
 
@@ -97,7 +97,7 @@ glm::vec3 getBarycentric(const Vertex& A, const Vertex& B, const Vertex& C, cons
 	glm::vec2 AB(B.windowPos.x - A.windowPos.x, B.windowPos.y - A.windowPos.y);
 	glm::vec2 AC(C.windowPos.x - A.windowPos.x, C.windowPos.y - A.windowPos.y);
 	glm::vec2 AP(P.x - A.windowPos.x, P.y - A.windowPos.y);
-	float S = AB.x * AC.y - AB.y * AC.x;
+	double S = AB.x * AC.y - AB.y * AC.x;
 	result[1] = (AP.x * AC.y - AP.y * AC.x) / S;
 	result[2] = (AB.x * AP.y - AB.y * AP.x) / S;
 	result[0] = 1 - result[1] - result[2];
@@ -123,9 +123,9 @@ glm::mat4 getViewMatrix(const glm::vec3& pos, const glm::vec3 front, const glm::
 }
 
 
-glm::mat4 getPerspectiveMatrix(const float& fovy, const float& aspect, const float& n, const float& f) {
+glm::mat4 getPerspectiveMatrix(const double& fovy, const double& aspect, const double& n, const double& f) {
 	glm::mat4 result = glm::mat4(0.0f);
-	float tanHalfFov = tan(fovy * 0.5f);
+	double tanHalfFov = tan(fovy * 0.5f);
 	result[0][0] = 1.0f / (aspect * tanHalfFov);
 	result[1][1] = 1.0f / (tanHalfFov);
 	result[2][2] = -(f + n) / (f - n);
@@ -170,7 +170,7 @@ T triMax(T a, T b, T c) {
 	}
 }
 
-float distance(const glm::vec3& point, const glm::vec4& plane) {
+double distance(const glm::vec3& point, const glm::vec4& plane) {
 	return point.x * plane.x + point.y * plane.y + point.z * plane.z + plane.w;
 }
 

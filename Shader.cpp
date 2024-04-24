@@ -15,11 +15,14 @@ Vertex BaseShader::vertexShader(const RawVertex& v) {
 	Vertex result;
 	result.worldPos = modelMatrix * v.position;
 	result.windowPos = projectMatrix * viewMatrix * result.worldPos;
+	result.color = v.color;
+	result.texCoord = v.texCoord;
+	result.normal = v.normal;
 
 	result.oneDivZ = 1.0 / result.windowPos.w;
 	result.worldPos *= result.oneDivZ;
-	result.color = v.color * result.oneDivZ;
-	result.texCoord = v.texCoord * result.oneDivZ;
+	result.color *= result.oneDivZ;
+	result.texCoord *= result.oneDivZ;
 
 	return result;
 }
@@ -150,6 +153,7 @@ glm::vec4 PhongShader::fragmentShader(const Vertex& v2f)
 
 	// Gouraud shading.
 	if (m_texture)
+		
 		litColor = m_texture->sample2D(v2f.texCoord);
 	glm::vec3 _amb, _diff, _spec;
 	if (m_light)

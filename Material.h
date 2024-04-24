@@ -11,7 +11,7 @@ public:
     glm::vec3 m_diffuse;
     glm::vec3 m_specular;
     glm::vec3 m_reflect;
-    void setMaterial(glm::vec3 _amb, glm::vec3 _diff, glm::vec3 _spec, float _shin)
+    void setMaterial(glm::vec3 _amb, glm::vec3 _diff, glm::vec3 _spec, double _shin)
     {
         m_shininess = _shin;
         m_ambient = _amb;

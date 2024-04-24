@@ -6,7 +6,7 @@
 class FrameBuffer {
 private:
 	int width, height;
-	std::vector<float> depthBuffer;
+	std::vector<double> depthBuffer;
 public:
 	std::vector<unsigned char> colorBuffer;
 
@@ -21,8 +21,8 @@ public:
 	void fillColorBuffer(const glm::vec4& color);
 	void drawPixel(const int& x, const int& y, const glm::vec4& color);
 
-	float getDepth(const int& x, const int& y);
-	void setDepth(const int& x, const int& y, const float& depth);
+	double getDepth(const int& x, const int& y);
+	void setDepth(const int& x, const int& y, const double& depth);
 };
 
 

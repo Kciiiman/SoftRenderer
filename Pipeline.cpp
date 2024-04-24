@@ -299,6 +299,11 @@ void Pipeline::scanLinePerRow(const Vertex& left, const Vertex& right)
 			continue;// fail to pass the depth testing.
 		m_backBuffer->setDepth(current.windowPos.x, current.windowPos.y, current.windowPos.z);
 
+		if (current.windowPos.x < 0 || current.windowPos.y < 0)
+			continue;
+		if (current.windowPos.x >= width || current.windowPos.y >= height)
+			break;
+
 		current.worldPos /= current.oneDivZ;
 		current.texCoord /= current.oneDivZ;
 		current.color /= current.oneDivZ;
@@ -473,6 +478,42 @@ void Pipeline::drawIndex(RenderMode mode, const Mesh* mesh)
 			else if (mode == RenderMode::MESH)
 			{
 				edgeWalkingFillRasterization(v1, v2, v3);
+			}
+			//drawTriangleBoundary(v1, v2, v3);
+		}
+	}
+}
+
+//使用重心坐标系, 遍历三角形包围盒填充
+void Pipeline::drawTriangleBoundary(const Vertex & v1, const Vertex & v2, const Vertex & v3) {
+
+	// 计算包围盒
+	int min_x = triMin(v1.windowPos.x, v2.windowPos.x, v3.windowPos.x);
+	int min_y = triMin(v1.windowPos.y, v2.windowPos.y, v3.windowPos.y);
+	int max_x = triMax(v1.windowPos.x, v2.windowPos.x, v3.windowPos.x) + 1;
+	int max_y = triMax(v1.windowPos.y, v2.windowPos.y, v3.windowPos.y) + 1;
+
+	// 遍历包围盒中的点
+#pragma omp parallel for collapse(2)
+	for (int x = min_x; x < max_x; x++) {
+		for (int y = min_y; y < max_y; y++) {
+			glm::vec3 barycentric = getBarycentric(v1, v2, v3, glm::vec2(x, y)); // 计算重心坐标
+			if (barycentric[0] >= 0 && barycentric[1] >= 0 && barycentric[2] >= 0) { // 点在三角形内部
+				Vertex current = Lerp(v1, v2, v3, barycentric);
+				// depth testing.
+				double depth = m_backBuffer->getDepth(current.windowPos.x, current.windowPos.y);
+				if (current.windowPos.z > depth)
+					continue;// fail to pass the depth testing.
+				m_backBuffer->setDepth(current.windowPos.x, current.windowPos.y, current.windowPos.z);
+
+				current.worldPos /= current.oneDivZ;
+				current.texCoord /= current.oneDivZ;
+				current.color /= current.oneDivZ;
+
+				// fragment shader
+				m_backBuffer->drawPixel(current.windowPos.x, current.windowPos.y,
+					shader->fragmentShader(current));
+				
 			}
 		}
 	}

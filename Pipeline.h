@@ -61,6 +61,7 @@ public:
 	unsigned int loadTexture(const std::string& path);
 	bool bindTexture(const unsigned int& unit);
 	bool unbindTexture(const unsigned int& unit);
+	void setShaderMode(ShadingMode ShaderMode);
 
 	void setMaterial(const Material* material);
 
@@ -80,8 +81,7 @@ public:
 
 	//now
 	void drawIndex(RenderMode mode, const Mesh* mesh);
-	void setShaderMode(ShadingMode ShaderMode);
-
+	void drawTriangleBoundary(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 private:
 	void bresenhamLineRasterization(const Vertex& from, const Vertex& to);
 	void scanLinePerRow(const Vertex& left, const Vertex& right);

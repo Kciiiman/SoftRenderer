@@ -9,7 +9,7 @@ public:
 	Model(const std::string& path);
 	virtual ~Model();
 	// Size setting.
-	glm::mat4 setSize(float sx, float sy, float sz) const;
+	glm::mat4 setSize(double sx, double sy, double sz) const;
 
 private:
 	// Obj file loader.
