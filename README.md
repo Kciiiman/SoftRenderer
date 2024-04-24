@@ -15,7 +15,7 @@
 - stb_image.h
 
 
-## Future
+## Feature
 
 - Bresenham描线算法
 - Edge-Walking三角形填充算法
