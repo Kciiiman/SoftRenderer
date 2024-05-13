@@ -90,8 +90,8 @@ int main(int argc, char** argv) {
     //model
     //Model model("./image/floor/floor.obj");
     //pip.loadTexture("./image/floor/floor_diffuse.tga");
-	Model model("D:\\Kci_Renderer\\SoftRenderer\\image\\african_head\\african_head.obj");
-    pip.loadTexture("D:\\Kci_Renderer\\SoftRenderer\\image\\african_head\\african_head_diffuse.tga");
+	Model model("/Users/kciiiman/Desktop/SoftRenderer/image/african_head/african_head.obj");
+    pip.loadTexture("/Users/kciiiman/Desktop/SoftRenderer/image/african_head/african_head_diffuse.tga");
 
     pip.bindTexture(0);
     pip.add(&model);

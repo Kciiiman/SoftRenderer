@@ -43,7 +43,7 @@ add_executable(demo ${SRC_LIST})
 
 # 链接系统的 OpenGL 框架
 if (APPLE)
-    target_link_libraries(HelloGL "-framework OpenGL")
+    target_link_libraries(demo "-framework OpenGL")
 endif()
 
 include(CTest)
