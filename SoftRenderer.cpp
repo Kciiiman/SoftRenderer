@@ -2,7 +2,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <iostream>
 #include <string>
-#include <Windows.h>
+//#include <Windows.h>
 #include <thread>
 #include "Pipeline.h"
 
@@ -22,14 +22,14 @@ glm::vec4 refreshColor(30, 80, 90, 255);
 glm::vec4 Black(0, 0, 0, 255);
 
 
-void ShowFps(GLFWwindow* window) {
-    while (1) {
-        Sleep(1000);
-        std::string text = "MyRender fps:" + std::to_string(fps);
-        glfwSetWindowTitle(window, text.c_str());
-        fps = 0;
-    }
-}
+// void ShowFps(GLFWwindow* window) {
+//     while (1) {
+//         Sleep(1000);
+//         std::string text = "MyRender fps:" + std::to_string(fps);
+//         glfwSetWindowTitle(window, text.c_str());
+//         fps = 0;
+//     }
+// }
 
 
 int main(int argc, char** argv) {
@@ -90,14 +90,14 @@ int main(int argc, char** argv) {
     //model
     //Model model("./image/floor/floor.obj");
     //pip.loadTexture("./image/floor/floor_diffuse.tga");
-	Model model("./image/african_head/african_head.obj");
-    pip.loadTexture("./image/african_head/african_head_diffuse.tga");
+	Model model("D:\\Kci_Renderer\\SoftRenderer\\image\\african_head\\african_head.obj");
+    pip.loadTexture("D:\\Kci_Renderer\\SoftRenderer\\image\\african_head\\african_head_diffuse.tga");
 
     pip.bindTexture(0);
     pip.add(&model);
 
-    std::thread t(ShowFps, window);
-    t.detach();
+    // std::thread t(ShowFps, window);
+    // t.detach();
 
     float angle = 0.0f;
 
@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
         pip.display();
         pip.swapBuffer();
         angle += 10.0f;
-        fps++;
+        // fps++;
 
         // Rendering
         ImGui::Render();

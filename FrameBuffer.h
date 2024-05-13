@@ -1,7 +1,7 @@
 #ifndef __FrameBuffer_H__
 #define __FrameBuffer_H__
 #include <vector>
-#include "glm/glm.hpp"
+#include "glm.hpp"
 
 class FrameBuffer {
 private:

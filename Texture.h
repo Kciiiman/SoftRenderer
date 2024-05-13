@@ -2,7 +2,7 @@
 #define __TEXTURE_H__
 
 #include <string>
-#include <glm/glm.hpp>
+#include "glm.hpp"
 #include "stb_image.h"
 #include "stb_image_write.h"
 

@@ -1,6 +1,5 @@
 #pragma once
 #include "Material.h"
-
 #define M_PI 3.1415926
 
 class Light
@@ -18,7 +17,7 @@ public:
         glm::vec3& specular) const = 0;
 };
 
-//Æ½ÐÐ¹â
+//Æ½ï¿½Ð¹ï¿½
 class DirectionalLight : public Light
 {
 public:
@@ -46,7 +45,7 @@ public:
 };
 
 
-//µã¹âÔ´
+//ï¿½ï¿½ï¿½Ô´
 class PointLight : public Light
 {
 public:
@@ -75,7 +74,7 @@ public:
     }
 };
 
-//¾ÛÊø¹â
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 class SpotLight : public Light
 {
 public:

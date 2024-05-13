@@ -81,9 +81,9 @@ void SaveColorBufferToFile(const char* filename, const std::vector<unsigned char
 
 void Pipeline::display() {
 	//glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, frameBuffer->colorBuffer.data());
-	SaveColorBufferToFile("./out/output.png", m_backBuffer->colorBuffer, width, height);
+	SaveColorBufferToFile("D:\\Kci_Renderer\\SoftRenderer\\out\\output.png", m_backBuffer->colorBuffer, width, height);
 	GLuint my_image_texture = 0;
-	bool ret = LoadTextureFromFile("./out/output.png", &my_image_texture, &width, &height);
+	bool ret = LoadTextureFromFile("D:\\Kci_Renderer\\SoftRenderer\\out\\output.png", &my_image_texture, &width, &height);
 	IM_ASSERT(ret);
 
 	updateCamera();
@@ -420,7 +420,7 @@ void Pipeline::drawIndex(RenderMode mode, const Mesh* mesh)
 	int size = mesh->EBO.size();
 	if (size == 0)return;
 
-	for (unsigned int i = 0; i < mesh->EBO.size(); i += 3)
+	for (unsigned int i = 0; i < size; i += 3)
 	{
 		//! assembly to triangle primitive.
 		RawVertex p1, p2, p3;
@@ -484,21 +484,21 @@ void Pipeline::drawIndex(RenderMode mode, const Mesh* mesh)
 	}
 }
 
-//Ê¹ÓÃÖØÐÄ×ø±êÏµ, ±éÀúÈý½ÇÐÎ°üÎ§ºÐÌî³ä
+//Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½Î§ï¿½ï¿½ï¿½ï¿½ï¿½
 void Pipeline::drawTriangleBoundary(const Vertex & v1, const Vertex & v2, const Vertex & v3) {
 
-	// ¼ÆËã°üÎ§ºÐ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Î§ï¿½ï¿½
 	int min_x = triMin(v1.windowPos.x, v2.windowPos.x, v3.windowPos.x);
 	int min_y = triMin(v1.windowPos.y, v2.windowPos.y, v3.windowPos.y);
 	int max_x = triMax(v1.windowPos.x, v2.windowPos.x, v3.windowPos.x) + 1;
 	int max_y = triMax(v1.windowPos.y, v2.windowPos.y, v3.windowPos.y) + 1;
 
-	// ±éÀú°üÎ§ºÐÖÐµÄµã
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§ï¿½ï¿½ï¿½ÐµÄµï¿½
 #pragma omp parallel for collapse(2)
 	for (int x = min_x; x < max_x; x++) {
 		for (int y = min_y; y < max_y; y++) {
-			glm::vec3 barycentric = getBarycentric(v1, v2, v3, glm::vec2(x, y)); // ¼ÆËãÖØÐÄ×ø±ê
-			if (barycentric[0] >= 0 && barycentric[1] >= 0 && barycentric[2] >= 0) { // µãÔÚÈý½ÇÐÎÄÚ²¿
+			glm::vec3 barycentric = getBarycentric(v1, v2, v3, glm::vec2(x, y)); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			if (barycentric[0] >= 0 && barycentric[1] >= 0 && barycentric[2] >= 0) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú²ï¿½
 				Vertex current = Lerp(v1, v2, v3, barycentric);
 				// depth testing.
 				double depth = m_backBuffer->getDepth(current.windowPos.x, current.windowPos.y);

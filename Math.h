@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Mesh.h"
-#include <glm/glm.hpp>
+#include "glm.hpp"
 
 const double tolerance = 1e-5f;
 

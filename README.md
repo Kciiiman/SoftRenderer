@@ -39,6 +39,22 @@
 
 ![img](https://cdn.nlark.com/yuque/0/2024/png/35466668/1713877481762-37faabef-8a62-40ae-9d44-ada3992dd38b.png)
 
+## Attention:
+
+cmake(win):
+
+```
+cmake .. -DCMAKE_GENERATOR="Unix Makefiles"
+```
+
+u can:
+
+1. mkdir build
+2. cd build
+3. cmake ..
+4. make
+5. ./demo
+
 ## 后续可做（目前想法）：
 
 1. 窗口画面调整时渲染图像不变(窗口全屏化)

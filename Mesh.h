@@ -2,7 +2,7 @@
 #define __MESH_H__
 
 #include <vector>
-#include "glm/glm.hpp"
+#include "glm.hpp"
 
 class RawVertex {
 public:
