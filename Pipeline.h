@@ -80,7 +80,8 @@ public:
 	void drawObject(const Model* obj);
 
 	//now
-	void drawIndex(RenderMode mode, const Mesh* mesh);
+	void drawVertex(int x, int y, Vertex& v);
+	void drawMesh(RenderMode mode, const Mesh* mesh);
 	void drawTriangleBoundary(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 private:
 	void bresenhamLineRasterization(const Vertex& from, const Vertex& to);

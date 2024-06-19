@@ -2,7 +2,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <iostream>
 #include <string>
-//#include <Windows.h>
+#include <Windows.h>
 #include <thread>
 #include "Pipeline.h"
 
@@ -17,19 +17,19 @@ int fps = 0;
 
 //pram
 Pipeline pip(SCR_WIDTH, SCR_HEIGHT,RenderMode::MESH);
-Camera camera(glm::vec3(0.0f, 0.0f, -3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 45.0f, 0.1f, 100.0f);
+Camera camera(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 45.0f, 0.1f, 100.0f);
 glm::vec4 refreshColor(30, 80, 90, 255);
 glm::vec4 Black(0, 0, 0, 255);
 
 
-// void ShowFps(GLFWwindow* window) {
-//     while (1) {
-//         Sleep(1000);
-//         std::string text = "MyRender fps:" + std::to_string(fps);
-//         glfwSetWindowTitle(window, text.c_str());
-//         fps = 0;
-//     }
-// }
+ void ShowFps(GLFWwindow* window) {
+     while (1) {
+         Sleep(1000);
+         std::string text = "MyRender fps:" + std::to_string(fps);
+         glfwSetWindowTitle(window, text.c_str());
+         fps = 0;
+     }
+ }
 
 
 int main(int argc, char** argv) {
@@ -90,16 +90,16 @@ int main(int argc, char** argv) {
     //model
     //Model model("./image/floor/floor.obj");
     //pip.loadTexture("./image/floor/floor_diffuse.tga");
-	Model model("/Users/kciiiman/Desktop/SoftRenderer/image/african_head/african_head.obj");
-    pip.loadTexture("/Users/kciiiman/Desktop/SoftRenderer/image/african_head/african_head_diffuse.tga");
+	Model model("./image/african_head/african_head.obj");
+    pip.loadTexture("./image/african_head/african_head_diffuse.tga");
 
     pip.bindTexture(0);
     pip.add(&model);
 
-    // std::thread t(ShowFps, window);
-    // t.detach();
+     std::thread t(ShowFps, window);
+     t.detach();
 
-    float angle = 0.0f;
+    float angle = 180.0f;
 
 
     while (!glfwWindowShouldClose(window))
@@ -116,8 +116,8 @@ int main(int argc, char** argv) {
     	pip.drawObject(&model);
         pip.display();
         pip.swapBuffer();
-        angle += 10.0f;
-        // fps++;
+        angle += 0.0f;
+        fps++;
 
         // Rendering
         ImGui::Render();

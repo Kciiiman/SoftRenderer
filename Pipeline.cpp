@@ -1,5 +1,6 @@
 #include "Pipeline.h"
 
+#include <omp.h>
 Pipeline::Pipeline(int width, int height, RenderMode m)
 	:width(width), height(height)
 	, shader(nullptr), m_frontBuffer(nullptr)
@@ -81,9 +82,9 @@ void SaveColorBufferToFile(const char* filename, const std::vector<unsigned char
 
 void Pipeline::display() {
 	//glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, frameBuffer->colorBuffer.data());
-	SaveColorBufferToFile("/Users/kciiiman/Desktop/SoftRenderer/out/output.png", m_backBuffer->colorBuffer, width, height);
+	SaveColorBufferToFile("./out/output.png", m_backBuffer->colorBuffer, width, height);
 	GLuint my_image_texture = 0;
-	bool ret = LoadTextureFromFile("/Users/kciiiman/Desktop/SoftRenderer/out/output.png", &my_image_texture, &width, &height);
+	bool ret = LoadTextureFromFile("./out/output.png", &my_image_texture, &width, &height);
 	IM_ASSERT(ret);
 
 	updateCamera();
@@ -285,6 +286,7 @@ void Pipeline::scanLinePerRow(const Vertex& left, const Vertex& right)
 {
 	Vertex current;
 	int length = right.windowPos.x - left.windowPos.x + 1;
+#pragma omp parallel for
 	for (int i = 0; i <= length; ++i)
 	{
 		// linear interpolation
@@ -327,7 +329,7 @@ void Pipeline::rasterTopTriangle(Vertex& v1, Vertex& v2, Vertex& v3)
 		right = tmp;
 	}
 	int dy = left.windowPos.y - dest.windowPos.y + 1;
-
+#pragma omp parallel for
 	for (int i = 0; i < dy; ++i)
 	{
 		double weight = 0;
@@ -354,7 +356,7 @@ void Pipeline::rasterBottomTriangle(Vertex& v1, Vertex& v2, Vertex& v3)
 	}
 	int dy = dest.windowPos.y - left.windowPos.y + 1;
 
-
+#pragma omp parallel for
 	for (int i = 0; i < dy; ++i)
 	{
 		double weight = 0;
@@ -412,7 +414,23 @@ void Pipeline::edgeWalkingFillRasterization(const Vertex& v1, const Vertex& v2, 
 	}
 }
 
-void Pipeline::drawIndex(RenderMode mode, const Mesh* mesh)
+void Pipeline::drawVertex(int x, int y, Vertex& v)
+{
+	float depth = m_backBuffer->getDepth(x, y);
+	if (v.windowPos.z < depth) {
+		m_backBuffer->setDepth(x, y, v.windowPos.z);
+
+		// 透视映射
+		v.worldPos /= v.oneDivZ;
+		v.texCoord /= v.oneDivZ;
+		v.normal /= v.oneDivZ;
+		v.color /= v.oneDivZ;
+
+		m_backBuffer->drawPixel(x, y, shader->fragmentShader(v));
+	}
+}
+
+void Pipeline::drawMesh(RenderMode mode, const Mesh* mesh)
 {
 	// renderer pipeline.
 	bool line1 = false, line2 = false, line3 = false;
@@ -477,9 +495,9 @@ void Pipeline::drawIndex(RenderMode mode, const Mesh* mesh)
 			}
 			else if (mode == RenderMode::MESH)
 			{
-				edgeWalkingFillRasterization(v1, v2, v3);
+				//edgeWalkingFillRasterization(v1, v2, v3);
+				drawTriangleBoundary(v1, v2, v3);
 			}
-			//drawTriangleBoundary(v1, v2, v3);
 		}
 	}
 }
@@ -499,21 +517,8 @@ void Pipeline::drawTriangleBoundary(const Vertex & v1, const Vertex & v2, const 
 		for (int y = min_y; y < max_y; y++) {
 			glm::vec3 barycentric = getBarycentric(v1, v2, v3, glm::vec2(x, y)); // ������������
 			if (barycentric[0] >= 0 && barycentric[1] >= 0 && barycentric[2] >= 0) { // �����������ڲ�
-				Vertex current = Lerp(v1, v2, v3, barycentric);
-				// depth testing.
-				double depth = m_backBuffer->getDepth(current.windowPos.x, current.windowPos.y);
-				if (current.windowPos.z > depth)
-					continue;// fail to pass the depth testing.
-				m_backBuffer->setDepth(current.windowPos.x, current.windowPos.y, current.windowPos.z);
-
-				current.worldPos /= current.oneDivZ;
-				current.texCoord /= current.oneDivZ;
-				current.color /= current.oneDivZ;
-
-				// fragment shader
-				m_backBuffer->drawPixel(current.windowPos.x, current.windowPos.y,
-					shader->fragmentShader(current));
-				
+				Vertex v = Lerp(v1, v2, v3, barycentric);
+				drawVertex(x, y, v);
 			}
 		}
 	}
@@ -527,5 +532,5 @@ void Pipeline::drawObject(const Model* obj) {
 	if (obj->EBO.empty()) {
 		return;
 	}
-	drawIndex(RenderMode::MESH, obj);
+	drawMesh(mode, obj);
 }
