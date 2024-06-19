@@ -36,6 +36,12 @@ elseif(APPLE)
     set(GLFW_LINK ${PROJECT_SOURCE_DIR}/lib/GLFW/MAC/lib-arm64/libglfw.3.dylib)
     link_libraries(${GLFW_LINK})
     message("Apple platform detected")
+else()  # Linux
+    set(GLFW_LINK ${PROJECT_SOURCE_DIR}/lib/GLFW/LINUX/libglfw3.a)
+    set(OPENGL_LINK ${PROJECT_SOURCE_DIR}/lib/libGL.so)
+    set(OPENGLU_LINK ${PROJECT_SOURCE_DIR}/lib/libGLU.so)
+    link_libraries(${GLFW_LINK} ${OPENGL_LINK} ${OPENGLU_LINK})
+    message("Linux platform detected")
 endif()
 
 # 添加可执行文件
@@ -43,7 +49,7 @@ add_executable(demo ${SRC_LIST})
 
 # 链接系统的 OpenGL 框架
 if (APPLE)
-    target_link_libraries(HelloGL "-framework OpenGL")
+    target_link_libraries(demo "-framework OpenGL")
 endif()
 
 include(CTest)

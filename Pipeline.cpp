@@ -81,9 +81,9 @@ void SaveColorBufferToFile(const char* filename, const std::vector<unsigned char
 
 void Pipeline::display() {
 	//glDrawPixels(width, height, GL_RGBA, GL_UNSIGNED_BYTE, frameBuffer->colorBuffer.data());
-	SaveColorBufferToFile("D:\\Kci_Renderer\\SoftRenderer\\out\\output.png", m_backBuffer->colorBuffer, width, height);
+	SaveColorBufferToFile("/Users/kciiiman/Desktop/SoftRenderer/out/output.png", m_backBuffer->colorBuffer, width, height);
 	GLuint my_image_texture = 0;
-	bool ret = LoadTextureFromFile("D:\\Kci_Renderer\\SoftRenderer\\out\\output.png", &my_image_texture, &width, &height);
+	bool ret = LoadTextureFromFile("/Users/kciiiman/Desktop/SoftRenderer/out/output.png", &my_image_texture, &width, &height);
 	IM_ASSERT(ret);
 
 	updateCamera();
